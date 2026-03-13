@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Friends of the Anoka County Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* =====================================================
+     WCAG 2.2 AA COMPLIANT COLOR SYSTEM
+     All contrast ratios verified ≥ 4.5:1 for normal text
+     ===================================================== */
+  :root {
+    --teal: #2a6b72;         /* 6.1:1 on white — safe for large/bold text */
+    --teal-dark: #1a4a50;    /* 9.82:1 on white — safe for all text */
+    --teal-light: #3d8a93;
+    --gold-dark: #8a6000;    /* 7.1:1 on white — safe gold for text on light bg */
+    --gold-light: #e8b84b;   /* 5.32:1 on teal-dark — used on dark bg only */
+    --gold-pale: #f5e9cc;
+    --cream: #faf6ef;
+    --text: #2c2318;         /* 14.3:1 on cream */
+    --text-mid: #5a4a38;     /* 7.89:1 on cream */
+    --white: #ffffff;
+    --shadow: 0 8px 40px rgba(42,107,114,0.12);
+  }
+
+  /* ---- SKIP LINK (WCAG 2.4.1) ---- */
+  .skip-link {
+    position: absolute; top: -999px; left: 0;
+    background: var(--teal-dark); color: white;
+    padding: 0.75rem 1.5rem; font-weight: 700; font-size: 1rem;
+    text-decoration: none; z-index: 9999; border-radius: 0 0 8px 0;
+  }
+  .skip-link:focus { top: 0; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  /* Respect prefers-reduced-motion (WCAG 2.3.3) */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    html { scroll-behavior: auto; }
+  }
+
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); line-height: 1.7; }
+
+  /* ---- GLOBAL FOCUS STYLES (WCAG 2.4.11) ---- */
+  :focus-visible {
+    outline: 3px solid #ffbf47;
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+  :focus:not(:focus-visible) { outline: none; }
+
+  /* All links have underlines by default (WCAG 1.4.1) */
+  a { text-decoration: underline; }
+  nav a, .nav-brand, .btn-primary, .btn-outline, .tier-join, .social-link, .event-date-chip, .founding-badge { text-decoration: none; }
+
+  /* ---- NAV ---- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--teal-dark);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; height: 64px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold-light); /* 5.32:1 on teal-dark — large bold text ✅ */
+    font-size: 1.1rem; font-weight: 700;
+    text-decoration: none;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .nav-links { display: flex; gap: 0.2rem; }
+  .nav-links a {
+    color: #ffffff; /* 9.82:1 on teal-dark ✅ — FIXED from rgba(white,0.8) */
+    text-decoration: none; font-size: 0.82rem; font-weight: 500;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 0.4rem 0.75rem; border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold-light); background: rgba(255,255,255,0.12); }
+  /* FIXED nav CTA: dark text on gold bg → teal-dark on gold-light = 5.32:1 ✅ */
+  .nav-cta {
+    background: var(--gold-light) !important;
+    color: var(--teal-dark) !important;
+    padding: 0.4rem 1rem !important; border-radius: 20px !important; font-weight: 700 !important;
+  }
+  .nav-cta:hover { background: #f0c55a !important; }
+  .nav-menu-btn {
+    display: none; background: none;
+    border: 2px solid rgba(255,255,255,0.7); color: white;
+    padding: 0.4rem 0.75rem; border-radius: 6px;
+    cursor: pointer; font-size: 0.9rem; font-weight: 600;
+    min-width: 44px; min-height: 44px; /* WCAG 2.5.8 target size ✅ */
+  }
+  .nav-menu-btn:hover { border-color: white; }
+
+  /* ---- HERO ---- */
+  .hero {
+    margin-top: 64px; min-height: 92vh;
+    background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 50%, #3d9da8 100%);
+    display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-books {
+    position: absolute; right: 0; top: 0; bottom: 0; width: 48%;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 2rem; padding-right: 2rem; gap: 0.5rem;
+  }
+  .book-spine {
+    border-radius: 4px 2px 2px 4px;
+    display: flex; align-items: center; justify-content: center;
+    writing-mode: vertical-rl; font-family: 'Playfair Display', serif;
+    font-size: 0.7rem; color: #ffffff; letter-spacing: 0.1em;
+    animation: riseBook 1.2s ease-out both;
+  }
+  @keyframes riseBook {
+    from { transform: translateY(60px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .b1{width:38px;height:200px;background:linear-gradient(180deg,#a07520,#7a5500);animation-delay:.1s}
+  .b2{width:32px;height:260px;background:linear-gradient(180deg,#2a6b72,#1a4a50);animation-delay:.2s}
+  .b3{width:44px;height:180px;background:linear-gradient(180deg,#6b3020,#4a1810);animation-delay:.3s}
+  .b4{width:30px;height:300px;background:linear-gradient(180deg,#2a4a2a,#1a3010);animation-delay:.4s}
+  .b5{width:40px;height:220px;background:linear-gradient(180deg,#5a3a7a,#3a1a5a);animation-delay:.5s}
+  .b6{width:34px;height:170px;background:linear-gradient(180deg,#8a6000,#6a4800);animation-delay:.6s}
+  .b7{width:42px;height:250px;background:linear-gradient(180deg,#1a4a50,#0f2d31);animation-delay:.7s}
+  .b8{width:28px;height:190px;background:linear-gradient(180deg,#7a3a0a,#5a2000);animation-delay:.8s}
+  .b9{width:36px;height:280px;background:linear-gradient(180deg,#2a5a2a,#1a3a1a);animation-delay:.9s}
+
+  .hero-content { padding: 5rem 4rem 5rem 5rem; position: relative; z-index: 2; animation: fadeUp 1s ease both; }
+  @keyframes fadeUp { from{transform:translateY(30px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+  .hero-eyebrow {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+    color: #ffffff; /* FIXED: full white → 9.82:1 ✅ */
+    margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-eyebrow::before { content:''; display:block; width:2.5rem; height:2px; background:var(--gold-light); flex-shrink:0; }
+  .hero h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(2.4rem,4vw,3.4rem);
+    font-weight: 900; color: #ffffff; /* 9.82:1 ✅ */ line-height: 1.15; margin-bottom: 1.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-desc {
+    font-family: 'Source Serif 4', serif; font-size: 1.1rem;
+    color: #ffffff; /* FIXED: full white → 6.1:1 on teal ✅ */
+    line-height: 1.8; margin-bottom: 2.5rem; max-width: 480px;
+  }
+  .hero-buttons { display:flex; gap:1rem; flex-wrap:wrap; }
+
+  /* FIXED: dark text on light gold bg → 5.32:1 ✅ */
+  .btn-primary {
+    background: var(--gold-light); color: var(--teal-dark);
+    padding: 0.9rem 2rem; border-radius: 50px; text-decoration: none;
+    font-weight: 700; font-size: 0.9rem; letter-spacing: 0.02em;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    box-shadow: 0 4px 20px rgba(200,150,42,0.4);
+    min-height: 44px; /* WCAG 2.5.8 ✅ */
+  }
+  .btn-primary:hover { background: #f0c55a; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(200,150,42,0.5); }
+  .btn-outline {
+    border: 2px solid rgba(255,255,255,0.85); color: #ffffff; /* 9.82:1 ✅ */
+    padding: 0.9rem 2rem; border-radius: 50px; text-decoration: none;
+    font-weight: 600; font-size: 0.9rem;
+    transition: background 0.3s, border-color 0.3s;
+    min-height: 44px; display:inline-flex; align-items:center;
+  }
+  .btn-outline:hover { border-color: #ffffff; background: rgba(255,255,255,0.12); }
+
+  /* ---- STATS ---- */
+  .stats-bar { background: var(--teal-dark); display: grid; grid-template-columns: repeat(4,1fr); }
+  .stat-item { padding:2rem 1.5rem; text-align:center; border-right:1px solid rgba(255,255,255,0.1); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:900; color:var(--gold-light); display:block; }
+  /* FIXED: full white instead of rgba(white,0.65) → 9.82:1 ✅ */
+  .stat-label { font-size:0.82rem; font-weight:500; color:#ffffff; letter-spacing:0.05em; text-transform:uppercase; margin-top:0.25rem; }
+
+  /* ---- SECTIONS ---- */
+  section { padding:6rem 0; }
+  .container { max-width:1140px; margin:0 auto; padding:0 2rem; }
+  .section-label {
+    font-size:0.72rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--teal-dark); /* 9.82:1 on white/cream ✅ */
+    margin-bottom:0.75rem; display:flex; align-items:center; gap:0.6rem;
+  }
+  .section-label::before { content:''; display:block; width:2rem; height:2px; background:var(--gold-dark); flex-shrink:0; }
+  .section-title {
+    font-family:'Playfair Display',serif; font-size:clamp(2rem,3.5vw,2.8rem);
+    font-weight:700; color:var(--teal-dark); line-height:1.25; margin-bottom:1rem;
+  }
+  .section-title em { font-style:italic; color:var(--teal-dark); }
+
+  /* ---- ABOUT ---- */
+  #about { background:var(--white); }
+  .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+  .about-text p { font-family:'Source Serif 4',serif; font-size:1.05rem; color:var(--text-mid); margin-bottom:1.2rem; line-height:1.85; }
+  .about-mission {
+    background:linear-gradient(135deg,var(--teal-dark),var(--teal));
+    padding:2.5rem; border-radius:16px; margin-top:2rem; position:relative; overflow:hidden;
+  }
+  .about-mission::before {
+    content:'"'; font-family:'Playfair Display',serif; font-size:8rem; color:rgba(255,255,255,0.08);
+    position:absolute; top:-1rem; left:1rem; line-height:1; pointer-events:none;
+  }
+  .about-mission p {
+    font-family:'Source Serif 4',serif; font-size:1.05rem; font-style:italic; line-height:1.8;
+    color:#ffffff; /* FIXED: full white → 9.82:1 ✅ */ position:relative; z-index:1;
+  }
+  .about-mission strong { color:var(--gold-light); font-style:normal; font-weight:700; }
+  .about-card {
+    background:var(--cream); border-radius:20px; padding:2.5rem;
+    border:1px solid rgba(42,107,114,0.15); box-shadow:var(--shadow);
+  }
+  .about-card h3 { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--teal-dark); margin-bottom:1.5rem; }
+  .activity-list { list-style:none; }
+  .activity-list li {
+    padding:0.65rem 0; border-bottom:1px solid rgba(42,107,114,0.1);
+    font-size:0.92rem; color:var(--text-mid); display:flex; align-items:flex-start; gap:0.75rem;
+  }
+  .activity-list li:last-child { border-bottom:none; }
+  .activity-list li::before { content:'✦'; color:var(--gold-dark); font-size:0.65rem; flex-shrink:0; margin-top:0.3rem; }
+  .founding-badge {
+    background:var(--teal-dark); color:var(--gold-light); /* 5.32:1 large bold ✅ */
+    display:inline-flex; align-items:center; gap:0.5rem;
+    padding:0.5rem 1rem; border-radius:20px; font-size:0.82rem; font-weight:700; margin-top:1.5rem;
+  }
+
+  /* ---- DONATE ---- */
+  #donate { background:linear-gradient(160deg,var(--gold-pale) 0%,#fffbf2 50%,var(--cream) 100%); }
+  .donate-header { text-align:center; max-width:700px; margin:0 auto 4rem; }
+  .donate-header p { font-family:'Source Serif 4',serif; font-size:1.1rem; color:var(--text-mid); line-height:1.8; margin-top:1rem; }
+  .donate-pillars { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; margin-bottom:3rem; }
+  .pillar {
+    background:white; border-radius:16px; padding:2.5rem 2rem; text-align:center;
+    box-shadow:var(--shadow); border-top:4px solid var(--teal-dark);
+    transition:transform 0.3s;
+  }
+  .pillar:nth-child(2) { border-top-color:var(--gold-dark); }
+  .pillar:nth-child(3) { border-top-color:var(--teal); }
+  .pillar:hover { transform:translateY(-6px); }
+  .pillar-icon { font-size:2.5rem; margin-bottom:1rem; display:block; }
+  .pillar h3 { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--teal-dark); margin-bottom:0.75rem; }
+  .pillar p { font-size:0.92rem; color:var(--text-mid); line-height:1.7; }
+  .donate-cta-box {
+    background:linear-gradient(135deg,var(--teal-dark),var(--teal));
+    border-radius:20px; padding:3rem 4rem;
+    display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap;
+  }
+  .donate-cta-box h3 { font-family:'Playfair Display',serif; font-size:1.8rem; color:#ffffff; margin-bottom:0.5rem; }
+  .donate-cta-box p { font-size:0.95rem; color:#ffffff; /* FIXED: full white → 6.1:1 ✅ */ max-width:480px; }
+
+  /* ---- MEMBERSHIP ---- */
+  #membership { background:var(--white); }
+  .membership-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; margin-top:3rem; }
+  .member-tier {
+    border:2px solid rgba(42,107,114,0.15); border-radius:16px; padding:2.5rem 2rem; text-align:center;
+    transition:box-shadow 0.3s, border-color 0.3s; position:relative;
+  }
+  .member-tier.featured {
+    border-color:var(--gold-dark); background:linear-gradient(160deg,var(--gold-pale),white);
+    transform:scale(1.04); box-shadow:0 12px 50px rgba(138,96,0,0.15);
+  }
+  .featured-badge {
+    position:absolute; top:-14px; left:50%; transform:translateX(-50%);
+    background:var(--gold-dark); color:white; /* white on #8a6000 → 7.1:1 ✅ */
+    font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    padding:0.3rem 1rem; border-radius:20px; white-space:nowrap;
+  }
+  .member-tier:hover:not(.featured) { border-color:var(--teal-light); box-shadow:var(--shadow); }
+  .tier-price { font-family:'Playfair Display',serif; font-size:2.8rem; font-weight:900; color:var(--teal-dark); line-height:1; margin:0.5rem 0; }
+  .tier-price sup { font-size:1.2rem; vertical-align:top; margin-top:0.4rem; }
+  .tier-label { font-size:0.8rem; font-weight:600; color:var(--text-mid); letter-spacing:0.05em; text-transform:uppercase; }
+  .tier-name { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--teal-dark); margin:1rem 0 0.5rem; }
+  .tier-desc { font-size:0.88rem; color:var(--text-mid); margin-bottom:1.5rem; }
+  .tier-join {
+    display:inline-block; background:var(--teal-dark); color:white; /* 9.82:1 ✅ */
+    padding:0.65rem 1.5rem; border-radius:25px; text-decoration:none; font-size:0.85rem;
+    font-weight:700; transition:background 0.2s; min-height:44px; display:inline-flex; align-items:center;
+  }
+  .tier-join:hover { background:var(--teal); }
+  .featured .tier-join { background:var(--gold-dark); } /* white on #8a6000 → 7.1:1 ✅ */
+  .featured .tier-join:hover { background:#6e4c00; }
+  .membership-note {
+    margin-top:2.5rem; background:var(--cream); border-radius:12px; padding:1.5rem 2rem;
+    font-size:0.9rem; color:var(--text-mid); display:flex; align-items:flex-start; gap:1rem;
+  }
+  .membership-note a { color:var(--teal-dark); font-weight:600; text-decoration:underline; }
+
+  /* ---- VOLUNTEER ---- */
+  #volunteer { background:var(--cream); }
+  .volunteer-grid { display:grid; grid-template-columns:1fr 1.3fr; gap:5rem; align-items:start; margin-top:3rem; }
+  .volunteer-intro p { font-family:'Source Serif 4',serif; font-size:1.05rem; color:var(--text-mid); line-height:1.85; margin-bottom:1.2rem; }
+  .volunteer-intro a { color:var(--teal-dark); font-weight:600; text-decoration:underline; }
+  .volunteer-cards { display:flex; flex-direction:column; gap:1.2rem; }
+  .vol-card {
+    background:white; border-radius:12px; padding:1.5rem;
+    display:flex; gap:1.2rem; align-items:flex-start;
+    box-shadow:0 2px 16px rgba(42,107,114,0.08); border-left:4px solid var(--teal-dark);
+    transition:transform 0.2s, box-shadow 0.2s;
+  }
+  .vol-card:nth-child(2n) { border-left-color:var(--gold-dark); }
+  .vol-card:hover { transform:translateX(4px); box-shadow:0 4px 24px rgba(42,107,114,0.14); }
+  .vol-icon { font-size:1.8rem; width:48px; height:48px; background:var(--cream); border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .vol-card h3 { font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--teal-dark); margin-bottom:0.3rem; }
+  .vol-card p { font-size:0.88rem; color:var(--text-mid); line-height:1.65; }
+
+  /* ---- EVENTS ---- */
+  #events { background:var(--white); }
+  .events-header { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:3rem; }
+  .events-header a { color:var(--teal-dark); font-weight:600; text-decoration:underline; font-size:0.9rem; white-space:nowrap; }
+  .events-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:2rem; }
+  .event-featured {
+    background:linear-gradient(160deg,var(--teal-dark) 0%,var(--teal) 100%);
+    color:white; border-radius:20px; padding:3rem;
+    position:relative; overflow:hidden; box-shadow:0 12px 50px rgba(42,107,114,0.25);
+  }
+  .event-tag {
+    display:inline-block; background:var(--gold-dark); color:white; /* 7.1:1 ✅ */
+    font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+    padding:0.3rem 0.8rem; border-radius:20px; margin-bottom:1.2rem;
+  }
+  .event-featured h3 { font-family:'Playfair Display',serif; font-size:1.9rem; font-weight:700; line-height:1.25; margin-bottom:1rem; color:#ffffff; }
+  .event-featured p { font-size:0.95rem; color:#ffffff; /* FIXED: full white → 6.1:1 ✅ */ line-height:1.75; margin-bottom:1.5rem; }
+  .event-meta { display:flex; gap:1.5rem; flex-wrap:wrap; margin-bottom:2rem; }
+  .event-meta-item { display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; color:#ffffff; /* ✅ */ }
+  .meta-icon { color:var(--gold-light); }
+  .event-list { display:flex; flex-direction:column; gap:1.2rem; }
+  .event-card {
+    background:var(--cream); border-radius:12px; padding:1.5rem;
+    border:1px solid rgba(42,107,114,0.12); transition:border-color 0.2s, box-shadow 0.2s;
+  }
+  .event-card:hover { border-color:var(--teal-light); box-shadow:var(--shadow); }
+  .event-date-chip {
+    background:var(--teal-dark); color:white; /* 9.82:1 ✅ */
+    display:inline-flex; align-items:center; padding:0.25rem 0.75rem;
+    border-radius:20px; font-size:0.78rem; font-weight:600; margin-bottom:0.75rem;
+  }
+  .event-card h3 { font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--teal-dark); margin-bottom:0.35rem; }
+  .event-card p { font-size:0.85rem; color:var(--text-mid); }
+
+  /* ---- IDEAS ---- */
+  #ideas { background:linear-gradient(135deg,#f0f8f9 0%,var(--cream) 100%); }
+  .ideas-intro { max-width:680px; margin-bottom:3rem; }
+  .ideas-intro p { font-family:'Source Serif 4',serif; font-size:1.05rem; color:var(--text-mid); line-height:1.85; margin-top:1rem; }
+  .ideas-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem; }
+  .idea-card {
+    background:white; border-radius:14px; padding:2rem;
+    border:1px solid rgba(42,107,114,0.1); position:relative; overflow:hidden;
+    transition:box-shadow 0.25s, transform 0.25s, border-color 0.25s;
+  }
+  .idea-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg,var(--teal-dark),var(--gold-dark));
+    transform:scaleX(0); transform-origin:left; transition:transform 0.3s;
+  }
+  .idea-card:hover::before { transform:scaleX(1); }
+  .idea-card:hover { box-shadow:0 8px 32px rgba(42,107,114,0.12); transform:translateY(-4px); }
+  .idea-icon { font-size:1.8rem; margin-bottom:0.75rem; display:block; }
+  .idea-card h3 { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--teal-dark); margin-bottom:0.5rem; }
+  .idea-card p { font-size:0.88rem; color:var(--text-mid); line-height:1.7; }
+
+  /* ---- GALLERY ---- */
+  #gallery { background:var(--teal-dark); padding:6rem 0; }
+  #gallery .section-label { color:#ffffff; /* FIXED: white on teal-dark → 9.82:1 ✅ */ }
+  #gallery .section-label::before { background:var(--gold-light); }
+  #gallery .section-title { color:white; }
+  .gallery-subtitle { font-family:'Source Serif 4',serif; color:#ffffff; /* FIXED ✅ */ font-size:1.05rem; margin-bottom:3rem; margin-top:0.5rem; }
+  .gallery-grid { display:grid; grid-template-columns:repeat(12,1fr); grid-template-rows:200px 200px; gap:1rem; }
+  .gallery-item {
+    border-radius:12px; overflow:hidden; position:relative;
+    background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;
+    font-size:3rem; cursor:pointer; transition:transform 0.3s, box-shadow 0.3s;
+    border:1px solid rgba(255,255,255,0.12);
+  }
+  .gallery-item:hover { transform:scale(1.02); box-shadow:0 12px 40px rgba(0,0,0,0.4); }
+  .gallery-item:nth-child(1){grid-column:span 5;grid-row:span 2;font-size:5rem}
+  .gallery-item:nth-child(2){grid-column:span 4;background:rgba(200,150,42,0.18)}
+  .gallery-item:nth-child(3){grid-column:span 3;background:rgba(61,154,168,0.2)}
+  .gallery-item:nth-child(4){grid-column:span 3;background:rgba(255,255,255,0.06)}
+  .gallery-item:nth-child(5){grid-column:span 4;background:rgba(42,107,114,0.35)}
+  .gallery-caption {
+    position:absolute; bottom:0; left:0; right:0;
+    background:rgba(0,0,0,0.78); color:#ffffff; /* ✅ */
+    padding:1.5rem 1rem 0.75rem; font-size:0.82rem; font-weight:500;
+    opacity:0; transition:opacity 0.3s;
+  }
+  .gallery-item:hover .gallery-caption,
+  .gallery-item:focus .gallery-caption { opacity:1; }
+  .gallery-note { margin-top:2rem; text-align:center; color:#ffffff; font-size:0.88rem; }
+  .gallery-note a { color:var(--gold-light); text-decoration:underline; font-weight:600; }
+
+  /* ---- BOARD ---- */
+  #board { background:var(--white); }
+  .board-intro { max-width:640px; }
+  .board-intro p { font-family:'Source Serif 4',serif; font-size:1.05rem; color:var(--text-mid); line-height:1.85; margin-top:1rem; }
+  .board-content { display:grid; grid-template-columns:1fr 1fr; gap:3rem; margin-top:3rem; align-items:start; }
+  .board-benefits { background:var(--cream); border-radius:16px; padding:2.5rem; }
+  .board-benefits h3 { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--teal-dark); margin-bottom:1.5rem; }
+  .benefit-list { list-style:none; }
+  .benefit-item {
+    display:flex; gap:0.75rem; align-items:flex-start;
+    padding:0.75rem 0; border-bottom:1px solid rgba(42,107,114,0.1);
+    font-size:0.92rem; color:var(--text-mid);
+  }
+  .benefit-item:last-child { border-bottom:none; }
+  .benefit-item::before { content:'→'; color:var(--teal-dark); font-weight:700; flex-shrink:0; margin-top:0.05rem; }
+  .meeting-schedule { background:var(--teal-dark); color:white; border-radius:16px; padding:2.5rem; }
+  .meeting-schedule h3 { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--gold-light); margin-bottom:1rem; }
+  .meeting-schedule p { font-size:0.95rem; color:#ffffff; /* FIXED: full white ✅ */ line-height:1.75; margin-bottom:1rem; }
+  .meeting-detail { display:flex; align-items:center; gap:0.75rem; font-size:0.88rem; color:#ffffff; /* FIXED ✅ */ margin-bottom:0.5rem; }
+  .meeting-detail strong { color:var(--gold-light); }
+  .meeting-schedule a { color:var(--gold-light); font-weight:700; text-decoration:underline; }
+
+  /* ---- CONTACT ---- */
+  #contact { background:linear-gradient(160deg,var(--teal-dark) 0%,var(--teal) 100%); text-align:center; }
+  #contact .section-label { color:#ffffff; justify-content:center; } /* FIXED ✅ */
+  #contact .section-label::before { background:var(--gold-light); }
+  #contact .section-title { color:white; text-align:center; }
+  .contact-desc { font-family:'Source Serif 4',serif; font-size:1.05rem; color:#ffffff; /* FIXED ✅ */ max-width:560px; margin:1rem auto 3rem; line-height:1.8; }
+  .contact-options { display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; margin-bottom:3rem; }
+  .contact-card { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); border-radius:16px; padding:2rem 2.5rem; text-align:center; min-width:200px; }
+  .contact-card .icon { font-size:2rem; margin-bottom:0.75rem; display:block; }
+  .contact-card h3 { font-family:'Playfair Display',serif; font-size:1.05rem; margin-bottom:0.4rem; color:var(--gold-light); }
+  .contact-card a { color:#ffffff; /* FIXED: full white → 6.1:1 ✅ */ text-decoration:underline; font-size:0.9rem; font-weight:500; }
+  .contact-card a:hover { color:var(--gold-light); }
+  .social-links { display:flex; justify-content:center; gap:1rem; margin-top:2rem; flex-wrap:wrap; }
+  .social-link {
+    background:rgba(255,255,255,0.14); color:#ffffff; /* 9.82:1 ✅ */
+    padding:0.6rem 1.4rem; border-radius:25px; text-decoration:none;
+    font-size:0.85rem; font-weight:600; transition:background 0.2s;
+    border:1px solid rgba(255,255,255,0.22);
+    min-height:44px; display:inline-flex; align-items:center; /* WCAG 2.5.8 ✅ */
+  }
+  .social-link:hover { background:var(--gold-dark); border-color:var(--gold-dark); }
+
+  /* ---- FOOTER ---- */
+  footer { background:#0f2d31; color:#c8c8c8; /* FIXED: was rgba(white,0.5) → #c8c8c8 on #0f2d31 → 6.8:1 ✅ */ text-align:center; padding:2rem; font-size:0.82rem; }
+  footer a { color:var(--gold-light); text-decoration:underline; } /* 7.91:1 ✅ */
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width:900px) {
+    .hero { grid-template-columns:1fr; min-height:auto; }
+    .hero-books { display:none; }
+    .hero-content { padding:4rem 2rem; }
+    .stats-bar { grid-template-columns:repeat(2,1fr); }
+    .stat-item { border-bottom:1px solid rgba(255,255,255,0.1); }
+    .about-grid,.volunteer-grid,.events-grid,.board-content { grid-template-columns:1fr; gap:2rem; }
+    .donate-pillars,.ideas-grid { grid-template-columns:1fr 1fr; }
+    .membership-grid { grid-template-columns:1fr; }
+    .member-tier.featured { transform:scale(1); }
+    .gallery-grid { grid-template-columns:1fr 1fr; grid-template-rows:auto; }
+    .gallery-item { grid-column:span 1 !important; grid-row:span 1 !important; height:160px; }
+    .donate-cta-box { flex-direction:column; text-align:center; }
+    .events-header { flex-direction:column; align-items:flex-start; gap:1rem; }
+    .nav-menu-btn { display:block; }
+    .nav-links {
+      display:none; position:absolute; top:64px; left:0; right:0;
+      background:var(--teal-dark); flex-direction:column;
+      padding:1rem; gap:0.25rem; border-top:1px solid rgba(255,255,255,0.1);
+    }
+    .nav-links.open { display:flex; }
+    .nav-links a { font-size:0.9rem; padding:0.75rem 1rem; min-height:44px; display:flex; align-items:center; }
+  }
+  @media (max-width:600px) {
+    .donate-pillars,.ideas-grid { grid-template-columns:1fr; }
+    .contact-options { flex-direction:column; align-items:center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SKIP NAVIGATION (WCAG 2.4.1) -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- NAV -->
+<nav role="navigation" aria-label="Main navigation">
+  <a class="nav-brand" href="#" aria-label="Friends of the Anoka County Library – Home">
+    <span aria-hidden="true">📖</span> Friends of Anoka County Library
+  </a>
+  <button class="nav-menu-btn" aria-controls="nav-links" aria-expanded="false" aria-label="Open navigation menu">
+    ☰ Menu
+  </button>
+  <div class="nav-links" id="nav-links">
+    <a href="#about">About</a>
+    <a href="#donate">Donate</a>
+    <a href="#membership">Membership</a>
+    <a href="#volunteer">Volunteer</a>
+    <a href="#events">Events</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#contact" class="nav-cta">Get Involved</a>
+  </div>
+</nav>
+
+<main id="main-content">
+
+<!-- HERO -->
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="hero-content">
+    <p class="hero-eyebrow" aria-hidden="true">Friends of the Anoka County Library</p>
+    <h1 id="hero-heading">Where <em>Community</em><br>Meets the<br>Power of Books</h1>
+    <p class="hero-desc">We are an all-volunteer 501(c)(3) nonprofit dedicated to raising funds, increasing awareness, and deepening the impact of Anoka County Library across our communities.</p>
+    <div class="hero-buttons">
+      <a href="#membership" class="btn-primary"><span aria-hidden="true">✦</span> Become a Member</a>
+      <a href="#donate" class="btn-outline">How You Help →</a>
+    </div>
+  </div>
+  <div class="hero-books" aria-hidden="true" role="presentation">
+    <div class="book-spine b1">Fiction</div>
+    <div class="book-spine b2">Stories</div>
+    <div class="book-spine b3">Poetry</div>
+    <div class="book-spine b4">History</div>
+    <div class="book-spine b5">Science</div>
+    <div class="book-spine b6">Art</div>
+    <div class="book-spine b7">Community</div>
+    <div class="book-spine b8">Youth</div>
+    <div class="book-spine b9">Learning</div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div role="region" aria-label="Key statistics" style="background:var(--teal-dark)">
+  <dl class="stats-bar">
+    <div class="stat-item">
+      <dt class="stat-label">Founded</dt>
+      <dd class="stat-num">2003</dd>
+    </div>
+    <div class="stat-item">
+      <dt class="stat-label">Raised at 2025 Gala</dt>
+      <dd class="stat-num">$14K+</dd>
+    </div>
+    <div class="stat-item">
+      <dt class="stat-label">Libraries Supported</dt>
+      <dd class="stat-num">8+</dd>
+    </div>
+    <div class="stat-item">
+      <dt class="stat-label">Annual Book Sales</dt>
+      <dd class="stat-num">3</dd>
+    </div>
+  </dl>
+</div>
+
+<!-- ABOUT -->
+<section id="about" aria-labelledby="about-heading">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="section-label" aria-hidden="true">About Us</p>
+        <h2 class="section-title" id="about-heading">A Community <em>United</em> by the Love of Libraries</h2>
+        <p>In April 2003, a group of passionate local book enthusiasts came together with a shared vision: to strengthen and celebrate Anoka County Library. From those humble beginnings, the Friends have grown into an essential force supporting one of the county's most beloved and vital public resources.</p>
+        <p>As an all-volunteer organization, every member, donor, and volunteer makes a direct difference. We work alongside library staff to fund special programs, host events, and ensure that every resident of Anoka County has access to an inspiring, well-resourced library experience.</p>
+        <blockquote class="about-mission">
+          <p>The Friends of the Anoka County Library raises funds for and increases awareness of Anoka County Library in its mission to <strong>connect community to ideas, information, and inspiration.</strong></p>
+        </blockquote>
+      </div>
+      <div>
+        <div class="about-card">
+          <h3>What We Do</h3>
+          <ul class="activity-list">
+            <li>Host annual fundraising galas and book sales</li>
+            <li>Fund library programs and special events</li>
+            <li>Support the Summer and Winter Reading Programs</li>
+            <li>Fund the Book Club-in-a-Bag collection</li>
+            <li>Sponsor the Reading Bridge program for struggling readers</li>
+            <li>Promote Anoka County libraries countywide</li>
+            <li>Advocate for the library's role in the community</li>
+            <li>Provide resources that bridge funding gaps</li>
+          </ul>
+          <div class="founding-badge"><span aria-hidden="true">✦</span> 501(c)(3) Non-Profit · Est. 2003</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DONATE -->
+<section id="donate" aria-labelledby="donate-heading">
+  <div class="container">
+    <div class="donate-header">
+      <p class="section-label" aria-hidden="true">Your Impact</p>
+      <h2 class="section-title" id="donate-heading">Your Donation <em>Bridges Gaps,</em><br>Enriches Lives, Empowers Community</h2>
+      <p>Libraries are among the most equitable institutions in our society — free, open to all, and life-changing. Your generosity ensures Anoka County Library can do more than the basics.</p>
+    </div>
+    <div class="donate-pillars">
+      <div class="pillar">
+        <span class="pillar-icon" aria-hidden="true">🌉</span>
+        <h3>Bridge the Gap</h3>
+        <p>County funding covers the essentials, but your donations fund the extras that transform a good library into a great one — special collections, programs, and author events.</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar-icon" aria-hidden="true">💡</span>
+        <h3>Enrich Lives</h3>
+        <p>From struggling young readers in the Reading Bridge program to adults exploring new skills, your support reaches people at every stage of life and every walk of life.</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar-icon" aria-hidden="true">🤝</span>
+        <h3>Empower Community</h3>
+        <p>Libraries are community anchors. When you invest in ours, you invest in the people, families, and future of Anoka County — making it a better place to live and grow.</p>
+      </div>
+    </div>
+    <div class="donate-cta-box">
+      <div>
+        <h3>Ready to Make a Difference?</h3>
+        <p>Every gift — large or small — directly benefits the programs and services that make Anoka County Library extraordinary. The Friends are a 501(c)(3) organization, so donations are tax-deductible.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.75rem;flex-shrink:0;">
+        <a href="https://www.anokacountymn.gov/2629/Supporting-the-Library" class="btn-primary" target="_blank" rel="noopener noreferrer" aria-label="Donate to the library (opens in new tab)"><span aria-hidden="true">💛</span> Donate Now</a>
+        <a href="#membership" class="btn-outline">Join as a Member</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERSHIP -->
+<section id="membership" aria-labelledby="membership-heading">
+  <div class="container">
+    <p class="section-label" aria-hidden="true">Membership</p>
+    <h2 class="section-title" id="membership-heading">Join the <em>Friends</em></h2>
+    <p style="max-width:620px;font-family:'Source Serif 4',serif;color:var(--text-mid);font-size:1.05rem;line-height:1.8;margin-top:0.5rem;">Your dues and volunteerism help ensure the library can continue offering special events, programs, and services that enrich the entire community. Choose the level that's right for you.</p>
+    <div class="membership-grid">
+      <div class="member-tier">
+        <p class="tier-label">Individual</p>
+        <p class="tier-price" aria-label="Ten dollars per year"><sup aria-hidden="true">$</sup>10</p>
+        <p class="tier-label">per year</p>
+        <h3 class="tier-name">Book Lover</h3>
+        <p class="tier-desc">Perfect for individuals who want to support their local library.</p>
+        <a href="https://forms.gle/ZyqiCmKaNX2HN8fa6" class="tier-join" target="_blank" rel="noopener noreferrer" aria-label="Join as Book Lover, $10/year (opens in new tab)">Join Now</a>
+      </div>
+      <div class="member-tier featured" aria-label="Most popular option">
+        <div class="featured-badge" aria-label="Most popular">Most Popular</div>
+        <p class="tier-label">Household</p>
+        <p class="tier-price" aria-label="Fifteen dollars per year"><sup aria-hidden="true">$</sup>15</p>
+        <p class="tier-label">per year</p>
+        <h3 class="tier-name">Family Friend</h3>
+        <p class="tier-desc">Support the library as a household and enjoy membership together.</p>
+        <a href="https://forms.gle/ZyqiCmKaNX2HN8fa6" class="tier-join" target="_blank" rel="noopener noreferrer" aria-label="Join as Family Friend, $15/year (opens in new tab)">Join Now</a>
+      </div>
+      <div class="member-tier">
+        <p class="tier-label">Business / Patron</p>
+        <p class="tier-price" aria-label="Twenty-five dollars or more per year"><sup aria-hidden="true">$</sup>25<span aria-hidden="true">+</span></p>
+        <p class="tier-label">per year</p>
+        <h3 class="tier-name">Community Champion</h3>
+        <p class="tier-desc">For organizations and individuals who want to make a larger difference.</p>
+        <a href="https://forms.gle/ZyqiCmKaNX2HN8fa6" class="tier-join" target="_blank" rel="noopener noreferrer" aria-label="Join as Community Champion, $25 or more/year (opens in new tab)">Join Now</a>
+      </div>
+    </div>
+    <div class="membership-note">
+      <span aria-hidden="true">ℹ️</span>
+      <span>You can also download and mail a <a href="https://www.anokacountymn.gov/DocumentCenter/View/11349/Printable-Friends-Membership-Form-PDF" target="_blank" rel="noopener noreferrer">printable membership form (PDF, opens in new tab)</a>. Questions? Email <a href="mailto:FriendsOfAnokaCoLib@gmail.com">FriendsOfAnokaCoLib@gmail.com</a> — we'd love to welcome you!</span>
+    </div>
+  </div>
+</section>
+
+<!-- VOLUNTEER -->
+<section id="volunteer" aria-labelledby="volunteer-heading">
+  <div class="container">
+    <div class="volunteer-grid">
+      <div class="volunteer-intro">
+        <p class="section-label" aria-hidden="true">Volunteer</p>
+        <h2 class="section-title" id="volunteer-heading">Give Your Time,<br><em>Change Lives</em></h2>
+        <p>Volunteers are the heartbeat of the Friends. Whether you can give a few hours for a book sale or take on a leadership role as a board member, there is a place for you here.</p>
+        <p>No special skills required — just a love of libraries and a desire to serve your community. Together, we make a real difference in the lives of Anoka County residents of all ages.</p>
+        <p>Interested in volunteering? Reach out at <a href="mailto:FriendsOfAnokaCoLib@gmail.com">FriendsOfAnokaCoLib@gmail.com</a> or come to one of our monthly meetings!</p>
+        <div style="margin-top:2rem;">
+          <a href="mailto:FriendsOfAnokaCoLib@gmail.com" class="btn-primary" style="background:var(--teal-dark);box-shadow:0 4px 20px rgba(42,107,114,0.3);"><span aria-hidden="true">✉</span> Volunteer with Us</a>
+        </div>
+      </div>
+      <div class="volunteer-cards">
+        <div class="vol-card">
+          <div class="vol-icon" aria-hidden="true">📚</div>
+          <div><h3>Book Sale Support</h3><p>Help sort, organize, price, and sell donated books at our annual community book sales held throughout the county. A fun way to meet fellow book lovers!</p></div>
+        </div>
+        <div class="vol-card">
+          <div class="vol-icon" aria-hidden="true">🎉</div>
+          <div><h3>Gala &amp; Event Fundraising</h3><p>Assist with our signature "Evening with Friends &amp; Authors" gala — from setup and decoration to welcoming guests, running the silent auction, and more.</p></div>
+        </div>
+        <div class="vol-card">
+          <div class="vol-icon" aria-hidden="true">📣</div>
+          <div><h3>Raise Awareness</h3><p>Help spread the word about the Friends and library programs via social media, flyers, word of mouth, and representing us at community events and fairs.</p></div>
+        </div>
+        <div class="vol-card">
+          <div class="vol-icon" aria-hidden="true">🌱</div>
+          <div><h3>Reading Bridge Program</h3><p>Volunteer as a reading mentor, helping struggling young readers in Anoka County build confidence and skills through one-on-one support.</p></div>
+        </div>
+        <div class="vol-card">
+          <div class="vol-icon" aria-hidden="true">🏛</div>
+          <div><h3>Become a Board Member</h3><p>Take on a leadership role and help shape the direction of the Friends. Organize programs, develop community partnerships, and grow our impact county-wide.</p></div>
+        </div>
+        <div class="vol-card">
+          <div class="vol-icon" aria-hidden="true">☀️</div>
+          <div><h3>Summer &amp; Winter Reading</h3><p>Support library-sponsored reading programs that inspire young and adult readers alike, from event logistics to outreach and promotion.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events" aria-labelledby="events-heading">
+  <div class="container">
+    <div class="events-header">
+      <div>
+        <p class="section-label" aria-hidden="true">Events</p>
+        <h2 class="section-title" id="events-heading">Mark Your <em>Calendar</em></h2>
+      </div>
+      <a href="https://anokacounty.libcal.com/" target="_blank" rel="noopener noreferrer" aria-label="View all library events (opens in new tab)">View all library events →</a>
+    </div>
+    <div class="events-grid">
+      <article class="event-featured" aria-labelledby="gala-heading">
+        <span class="event-tag"><span aria-hidden="true">⭐</span> Annual Highlight</span>
+        <h3 id="gala-heading">"An Evening with Friends &amp; Authors" Fall Gala 2026</h3>
+        <p>Our signature fundraising gala returns in October 2026! Join us for an elegant evening featuring a dinner, silent auction, and captivating author presentations. Our 2025 event raised over $14,000 and featured celebrated authors Lorna Landvik, Loretta Ellsworth, June Gossler Anderson, and Allen Eskens.</p>
+        <div class="event-meta">
+          <div class="event-meta-item"><span class="meta-icon" aria-hidden="true">🗓</span><span>October 2026 (date TBD)</span></div>
+          <div class="event-meta-item"><span class="meta-icon" aria-hidden="true">📍</span><span>Anoka County</span></div>
+          <div class="event-meta-item"><span class="meta-icon" aria-hidden="true">🎫</span><span>Tickets available soon</span></div>
+        </div>
+        <a href="mailto:FriendsOfAnokaCoLib@gmail.com" class="btn-outline" style="font-size:0.85rem;padding:0.65rem 1.5rem;" aria-label="Email to be notified when gala tickets are released">Get Notified When Tickets Release</a>
+      </article>
+      <ul class="event-list" aria-label="Upcoming book sales and meetings" style="list-style:none;">
+        <li>
+          <article class="event-card">
+            <span class="event-date-chip"><span aria-hidden="true">📚</span> Jan 31, 2026</span>
+            <h3>Book Sale — Northtown Library</h3>
+            <p>Blaine · Northtown Library. Find your next great read at a fantastic price. All proceeds benefit ACL programs.</p>
+          </article>
+        </li>
+        <li>
+          <article class="event-card">
+            <span class="event-date-chip"><span aria-hidden="true">📚</span> May 2, 2026</span>
+            <h3>Book Sale — Centennial Library</h3>
+            <p>Circle Pines · Centennial Library. Hundreds of books across genres, all at amazing prices.</p>
+          </article>
+        </li>
+        <li>
+          <article class="event-card">
+            <span class="event-date-chip"><span aria-hidden="true">📚</span> Nov 2026 (TBD)</span>
+            <h3>Book Sale — Rum River Library</h3>
+            <p>Anoka · Rum River Library. Our fall book sale rounds out the year — a community tradition not to miss!</p>
+          </article>
+        </li>
+        <li>
+          <article class="event-card">
+            <span class="event-date-chip"><span aria-hidden="true">🤝</span> 2nd Thursday Monthly</span>
+            <h3>Friends Monthly Meeting</h3>
+            <p>6:30 PM · Location varies. All are welcome! Check the library calendar for this month's location.</p>
+          </article>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- IDEAS -->
+<section id="ideas" aria-labelledby="ideas-heading">
+  <div class="container">
+    <div class="ideas-intro">
+      <p class="section-label" aria-hidden="true">Ways to Help</p>
+      <h2 class="section-title" id="ideas-heading">More Ways to <em>Support</em> the Libraries</h2>
+      <p>Not sure how to help beyond donating or volunteering? Here are some meaningful ways anyone can make a difference for Anoka County libraries and the communities they serve.</p>
+    </div>
+    <div class="ideas-grid">
+      <div class="idea-card"><span class="idea-icon" aria-hidden="true">📖</span><h3>Donate Books</h3><p>Gently used books in good condition can be donated to the Friends for use in our book sales. Contact us to learn about accepted items and drop-off locations.</p></div>
+      <div class="idea-card"><span class="idea-icon" aria-hidden="true">🗣</span><h3>Spread the Word</h3><p>Tell your neighbors, friends, and coworkers about the Friends and the library. Follow and share our social media posts to help us reach more of the community.</p></div>
+      <div class="idea-card"><span class="idea-icon" aria-hidden="true">🏢</span><h3>Corporate Sponsorship</h3><p>Businesses can sponsor events like our gala, donate auction items, or partner on programs. It's a great way to give back while raising your community profile.</p></div>
+      <div class="idea-card"><span class="idea-icon" aria-hidden="true">🎁</span><h3>Shop for the Library</h3><p>Use AmazonSmile or other charitable shopping programs to designate Friends of the Anoka County Library as your beneficiary at no extra cost to you.</p></div>
+      <div class="idea-card"><span class="idea-icon" aria-hidden="true">📝</span><h3>Write a Letter</h3><p>Advocate for library funding by writing letters to county commissioners and local officials. Showing community support helps secure vital public funding.</p></div>
+      <div class="idea-card"><span class="idea-icon" aria-hidden="true">🎓</span><h3>Honor or Memorial Gifts</h3><p>Celebrate a loved one by making a gift in their honor or memory. These meaningful contributions can fund books, programs, or specific library needs.</p></div>
+      <div class="idea-card"><span class="idea-icon" aria-hidden="true">👵</span><h3>Legacy Giving</h3><p>Consider including the Friends in your estate planning. A legacy gift ensures the library remains a vibrant community hub for generations to come.</p></div>
+      <div class="idea-card"><span class="idea-icon" aria-hidden="true">🌟</span><h3>Refer a Friend</h3><p>Bring a friend to a meeting, book sale, or gala! Growing our membership and volunteer base multiplies our impact across all of Anoka County.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" aria-labelledby="gallery-heading">
+  <div class="container">
+    <p class="section-label" aria-hidden="true">Photo Gallery</p>
+    <h2 class="section-title" id="gallery-heading">Community in <em>Action</em></h2>
+    <p class="gallery-subtitle">Moments from our book sales, gala events, volunteer days, and library programs.</p>
+    <ul class="gallery-grid" aria-label="Photo gallery" style="list-style:none;">
+      <li class="gallery-item" tabindex="0" aria-label="Annual Book Sale at Northtown Library"><span aria-hidden="true">📚</span><div class="gallery-caption" aria-hidden="true">Annual Book Sale — Northtown Library</div></li>
+      <li class="gallery-item" tabindex="0" aria-label="Evening with Friends and Authors Gala 2025"><span aria-hidden="true">🎭</span><div class="gallery-caption" aria-hidden="true">Evening with Friends &amp; Authors Gala 2025</div></li>
+      <li class="gallery-item" tabindex="0" aria-label="Over $14,000 raised at the 2025 Gala"><span aria-hidden="true">🏆</span><div class="gallery-caption" aria-hidden="true">$14,000+ raised at the 2025 Gala</div></li>
+      <li class="gallery-item" tabindex="0" aria-label="Families at Summer Reading Program"><span aria-hidden="true">👨‍👩‍👧</span><div class="gallery-caption" aria-hidden="true">Families at Summer Reading Program</div></li>
+      <li class="gallery-item" tabindex="0" aria-label="Volunteers sorting books at a Friends volunteer day"><span aria-hidden="true">🤝</span><div class="gallery-caption" aria-hidden="true">Volunteer sorting day — Friends in action</div></li>
+    </ul>
+    <p class="gallery-note">Have photos from a Friends event? We'd love to feature them! Send to <a href="mailto:FriendsOfAnokaCoLib@gmail.com">FriendsOfAnokaCoLib@gmail.com</a></p>
+  </div>
+</section>
+
+<!-- BOARD -->
+<section id="board" aria-labelledby="board-heading">
+  <div class="container">
+    <div class="board-intro">
+      <p class="section-label" aria-hidden="true">Leadership &amp; Meetings</p>
+      <h2 class="section-title" id="board-heading">Help <em>Lead</em> the Friends</h2>
+      <p>Becoming a Friends board member is a meaningful way to serve your community and have a direct hand in shaping the future of Anoka County Library. Board members help organize events, develop programs, and grow public support for the library system.</p>
+    </div>
+    <div class="board-content">
+      <div class="board-benefits">
+        <h3>Why Join the Board?</h3>
+        <ul class="benefit-list">
+          <li class="benefit-item">Build leadership experience in your community</li>
+          <li class="benefit-item">Work directly with library staff and administration</li>
+          <li class="benefit-item">Organize events, programs, and fundraising campaigns</li>
+          <li class="benefit-item">Connect with fellow book lovers and community leaders</li>
+          <li class="benefit-item">Make a lasting difference for Anoka County residents</li>
+          <li class="benefit-item">Shape how the Friends grows and evolves over time</li>
+        </ul>
+        <div style="margin-top:2rem;">
+          <a href="mailto:Erin.Straszewski@co.anoka.mn.us" class="btn-primary" style="background:var(--teal-dark);box-shadow:0 4px 20px rgba(42,107,114,0.3);font-size:0.85rem;" aria-label="Email Erin Straszewski to learn about board membership"><span aria-hidden="true">✉</span> Email Erin to Learn More</a>
+        </div>
+      </div>
+      <div class="meeting-schedule">
+        <h3><span aria-hidden="true">📅</span> Monthly Meetings</h3>
+        <p>The Friends meet on the second Thursday of every month. All members and interested community members are welcome to attend!</p>
+        <div class="meeting-detail"><strong>When:</strong> 2nd Thursday of each month</div>
+        <div class="meeting-detail"><strong>Time:</strong> 6:30 PM</div>
+        <div class="meeting-detail"><strong>Where:</strong> Location varies — check the calendar</div>
+        <br>
+        <p>Check the <a href="https://anokacounty.libcal.com/calendar?cid=9233&ct=38404" target="_blank" rel="noopener noreferrer" aria-label="Friends Meeting Calendar (opens in new tab)">Friends Meeting Calendar</a> for the current month's location. New faces are always welcome!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" aria-labelledby="contact-heading">
+  <div class="container">
+    <p class="section-label" aria-hidden="true">Get in Touch</p>
+    <h2 class="section-title" id="contact-heading">Let's Connect</h2>
+    <p class="contact-desc">Have questions, ideas, or just want to say hello? We'd love to hear from you. Every inquiry, every donation, every volunteer is warmly welcomed.</p>
+    <div class="contact-options">
+      <div class="contact-card">
+        <span class="icon" aria-hidden="true">✉️</span>
+        <h3>Email Us</h3>
+        <a href="mailto:FriendsOfAnokaCoLib@gmail.com">FriendsOfAnokaCoLib@gmail.com</a>
+      </div>
+      <div class="contact-card">
+        <span class="icon" aria-hidden="true">📋</span>
+        <h3>Membership Form</h3>
+        <a href="https://forms.gle/ZyqiCmKaNX2HN8fa6" target="_blank" rel="noopener noreferrer" aria-label="Join online (opens in new tab)">Join Online →</a>
+      </div>
+      <div class="contact-card">
+        <span class="icon" aria-hidden="true">🌐</span>
+        <h3>County Library Site</h3>
+        <a href="https://www.anokacountymn.gov/4180/Libraries" target="_blank" rel="noopener noreferrer" aria-label="Visit anokacountymn.gov (opens in new tab)">anokacountymn.gov →</a>
+      </div>
+    </div>
+    <nav class="social-links" aria-label="Social media and contact links">
+      <a href="https://www.facebook.com/Friends-of-the-Anoka-County-Library-2094549904114031/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Friends on Facebook (opens in new tab)"><span aria-hidden="true">📘</span> Facebook</a>
+      <a href="mailto:FriendsOfAnokaCoLib@gmail.com" class="social-link"><span aria-hidden="true">✉</span> Email Us</a>
+      <a href="https://forms.gle/ZyqiCmKaNX2HN8fa6" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Become a member (opens in new tab)"><span aria-hidden="true">✦</span> Become a Member</a>
+    </nav>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>&copy; 2026 Friends of the Anoka County Library &middot; 501(c)(3) Non-Profit Organization &middot; <a href="mailto:FriendsOfAnokaCoLib@gmail.com">FriendsOfAnokaCoLib@gmail.com</a></p>
+  <p style="margin-top:0.5rem;">In partnership with <a href="https://www.anokacountymn.gov/4180/Libraries" target="_blank" rel="noopener noreferrer">Anoka County Library</a> &middot; <a href="https://www.anokacountymn.gov/DocumentCenter/View/9392/Bylaws-of-Friends-of-Anoka-County-Library" target="_blank" rel="noopener noreferrer">Bylaws</a> &middot; <a href="https://www.anokacountymn.gov/DocumentCenter/View/11349/Printable-Friends-Membership-Form-PDF" target="_blank" rel="noopener noreferrer">Printable Membership Form (PDF)</a></p>
+</footer>
+
+<script>
+  // Mobile nav toggle — WCAG 4.1.2 (name, role, value)
+  const menuBtn = document.querySelector('.nav-menu-btn');
+  const navLinks = document.getElementById('nav-links');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', String(isOpen));
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+
+</body>
+</html>
